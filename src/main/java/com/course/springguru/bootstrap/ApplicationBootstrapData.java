@@ -44,25 +44,36 @@ public class ApplicationBootstrapData implements CommandLineRunner {
         Book domainDrivenDesign = new Book("Domain Driven Design", "R12BAHjNBLKD");
         Book cleanCode = new Book("Clean Code", "R12BAHHGDUKD");
 
-        robertMartin.getBooks().add(cleanCode);
-        ericEvans.getBooks().add(domainDrivenDesign);
-
-        cleanCode.setPublisher(publisher);
-        cleanCode.setPublisher(publisher);
-
         publisherRepository.save(publisher);
 
-        authorRepository.save(robertMartin);
-        authorRepository.save(ericEvans);
+        System.out.println("Publisher Count "+ publisherRepository.count());
 
-        bookRepository.save(cleanCode);
-        bookRepository.save(domainDrivenDesign);
+        ericEvans.getBooks().add(domainDrivenDesign);
+        domainDrivenDesign.getAuthors().add(ericEvans);
+        domainDrivenDesign.setPublisher(publisher);
+        publisher.getBooks().add(domainDrivenDesign);
 
+        persistEntities(ericEvans, domainDrivenDesign,publisher);
+
+        robertMartin.getBooks().add(cleanCode);
+        cleanCode.getAuthors().add(robertMartin);
+        cleanCode.setPublisher(publisher);
+        publisher.getBooks().add(cleanCode);
+
+        persistEntities(robertMartin, cleanCode, publisher);
 
         System.out.println("Init bootstrap");
         System.out.println("The number of books is " + bookRepository.count());
-        System.out.println("The number of publishers is " + publisherRepository.count());
-
+        System.out.println("Publisher Count " + publisherRepository.count());
+        System.out.println("Publisher number of Books " + publisher.getBooks().size());
 
     }
+
+    private void persistEntities(Author author, Book book, Publisher publisher) {
+        authorRepository.save(author);
+        bookRepository.save(book);
+        publisherRepository.save(publisher);
+    }
+
+
 }
