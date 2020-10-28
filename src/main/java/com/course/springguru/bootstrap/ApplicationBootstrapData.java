@@ -48,7 +48,7 @@ public class ApplicationBootstrapData implements CommandLineRunner {
         ericEvans.getBooks().add(domainDrivenDesign);
 
         cleanCode.setPublisher(publisher);
-        cleanCode.setPublisher(publisher);
+        domainDrivenDesign.setPublisher(publisher);
 
         publisherRepository.save(publisher);
 
